@@ -11,6 +11,8 @@ RequestExecutionLevel admin
 !define COMPANY "Deployd, LLC"
 !define URL http://www.deployd.com
 
+!define GUIDE_URL http://www.deployd.com/tutorial/step1
+
 # MUI Symbol Definitions
 !define MUI_ICON "${NSISDIR}\Contrib\Graphics\Icons\orange-install.ico"
 !define MUI_FINISHPAGE_NOAUTOCLOSE
@@ -30,17 +32,16 @@ RequestExecutionLevel admin
 !include Sections.nsh
 !include MUI2.nsh
 !include nsh\EnvVarUpdate.nsh
+!include nsh\FileAssoc.nsh
 
 # Variables
 Var StartMenuGroup
 
 # Installer pages
 !define MUI_FINISHPAGE_TEXT "You can now create a Deployd project by typing $\"dpd create [project-name]$\" into a command line."
-!define MUI_FINISHPAGE_LINK "Getting started guide"
-!define MUI_FINISHPAGE_LINK_LOCATION http://www.deployd.com/tutorial/step1
-!define MUI_FINISHPAGE_RUN "$INSTDIR\bin\dpd-update.cmd"
-!define MUI_FINISHPAGE_RUN_PARAMETERS "--wait"
-!define MUI_FINISHPAGE_RUN_TEXT "Check for updates when I click Finish"
+!define MUI_FINISHPAGE_RUN "explorer.exe"
+!define MUI_FINISHPAGE_RUN_PARAMETERS "${GUIDE_URL}"
+!define MUI_FINISHPAGE_RUN_TEXT "Open the Getting Started guide"
  
 !insertmacro MUI_PAGE_WELCOME 
 !insertmacro MUI_PAGE_LICENSE docs\license.rtf
@@ -97,8 +98,8 @@ Section -post SEC0001
     !insertmacro MUI_STARTMENU_WRITE_BEGIN Application
     SetOutPath $SMPROGRAMS\$StartMenuGroup
     CreateShortcut "$SMPROGRAMS\$StartMenuGroup\Uninstall $(^Name).lnk" $INSTDIR\uninstall.exe
-    CreateShortcut "$SMPROGRAMS\$StartMenuGroup\Update $(^Name).lnk" "$INSTDIR\bin\dpd-update.cmd" "--wait" "$INSTDIR\resources\logo-circle.ico" ""
-    !insertmacro CreateInternetShortcut "$SMPROGRAMS\$StartMenuGroup\Deployd.com" "http://www.deployd.com" "$INSTDIR\resources\logo-circle.ico" ""
+    CreateShortcut "$SMPROGRAMS\$StartMenuGroup\Check for Updates.lnk" "$INSTDIR\bin\dpd-update.cmd" "--wait" "$INSTDIR\resources\logo-circle.ico" ""
+    !insertmacro CreateInternetShortcut "$SMPROGRAMS\$StartMenuGroup\Getting Started" ${GUIDE_URL} "$INSTDIR\resources\logo-circle.ico" "0"
     !insertmacro MUI_STARTMENU_WRITE_END
     WriteRegStr HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" DisplayName "$(^Name)"
     WriteRegStr HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" DisplayVersion "${VERSION}"
@@ -110,6 +111,9 @@ Section -post SEC0001
     WriteRegDWORD HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" NoRepair 1
     
     ${EnvVarUpdate} $0 "PATH" "A" "HKLM" "$INSTDIR\bin" # TODO: Make this optional
+    !insertmacro APP_ASSOCIATE "dpd" "dpd.app" "Deployd App" "$INSTDIR\resources\logo-circle.ico" \
+        "Start Deployd app" "$INSTDIR\bin\dpd.cmd $\"%1$\" --dashboard --wait"
+    !insertmacro UPDATEFILEASSOC
 SectionEnd
 
 # Macro for selecting uninstaller sections
@@ -134,6 +138,8 @@ SectionEnd
 
 Section -un.post UNSEC0001
     ${un.EnvVarUpdate} $0 "PATH" "R" "HKLM" "$INSTDIR\bin"
+    !insertmacro APP_UNASSOCIATE "dpd" "dpd.app"
+    !insertmacro UPDATEFILEASSOC
     
     DeleteRegKey HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)"
     Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\Uninstall $(^Name).lnk"
