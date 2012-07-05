@@ -11,7 +11,7 @@ RequestExecutionLevel admin
 !define COMPANY "Deployd, LLC"
 !define URL http://www.deployd.com
 
-!define GUIDE_URL http://www.deployd.com/tutorial/step1
+!define GUIDE_URL http://www.deployd.com/docs
 
 # MUI Symbol Definitions
 !define MUI_ICON "${NSISDIR}\Contrib\Graphics\Icons\orange-install.ico"
