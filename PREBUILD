@@ -2,6 +2,6 @@ Important:
 --Must use the special large-string build of NSIS to avoid wiping out users' path, see http://nsis.sourceforge.net/Environmental_Variables:_append,_prepend,_and_remove_entries
 
 Pre-build:
-[-] Add tested version of node.exe and mongod.exe to deployd\tools
+[-] Add tested, 32-bit versions of node.exe and mongod.exe to deployd\tools
 [-] Add tested version of npm and shelljs to deployd\node_modules
 [-] Run deployd/bin/dpd-update

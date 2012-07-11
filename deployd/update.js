@@ -8,7 +8,7 @@ var npm = require('npm')
 
 process.chdir(__dirname);
 
-require('tty').setRawMode(true);    
+process.stdin.setRawMode(true);    
 
 function loadInfo(err) {
   abortIf(err);
@@ -40,7 +40,8 @@ function checkCurrentVersion() {
 function install() {
   echo("Installing Deployd...");
   
-  npm.commands.install(['deployd'], finished);
+  // npm.commands.install(['deployd'], finished);
+  npm.commands.install(['git://github.com/deployd/deployd.git'], finished);
 }
 
 function checkLatestVersion(err, data) {
@@ -91,4 +92,5 @@ function end(code) {
 }
 
 //TODO: Don't force!
-npm.load({force: true, production: true}, loadInfo);
+process.argv.push('-f');
+npm.load({production: true}, loadInfo);
