@@ -41,7 +41,7 @@ function install() {
   echo("Installing Deployd...");
   
   // npm.commands.install(['deployd'], finished);
-  npm.commands.install(['git://github.com/deployd/deployd.git'], finished);
+  npm.commands.install(['https://github.com/deployd/deployd/tarball/master'], finished);
 }
 
 function checkLatestVersion(err, data) {
@@ -65,6 +65,7 @@ function finished(err) {
   var newPackage = require('./node_modules/deployd/package'),
       version = newPackage.version;
 
+  echo("");
   echo("Installed Deployd version " + version);
   end(0);
 }
@@ -90,6 +91,11 @@ function end(code) {
     exit(code);  
   }
 }
+
+process.on('uncaughtException', function (err) {
+  console.log(err);
+  end(1);
+});
 
 //TODO: Don't force!
 process.argv.push('-f');
