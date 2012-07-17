@@ -1,10 +1,18 @@
 require('shelljs/global');
 
 var npm = require('npm')
+  , program = require('commander')
   , Stream = require('stream')
   , stdin = process.openStdin()
   , dummyStream = new Stream()
   , deploydPackage;
+
+program
+  .version('0.5.0')
+  .option('-f, --force', "Forces reinstall")
+  .option('-m, --master', "Installs unstable version from github")
+  .option('-w, --wait', "Waits before exiting")
+  .parse(process.argv);
 
 process.chdir(__dirname);
 
@@ -16,7 +24,7 @@ function loadInfo(err) {
 }
 
 function checkCurrentVersion() {
-  if (~process.argv.indexOf('-f') || ~process.argv.indexOf('--force')) {
+  if (program.force || program.master) {
     echo("Cleaning directory to force reinstall...");
     rm('-rf', './node_modules/deployd');
     install();
@@ -38,10 +46,13 @@ function checkCurrentVersion() {
 }
 
 function install() {
-  echo("Installing Deployd...");
-  
-  // npm.commands.install(['deployd'], finished);
-  npm.commands.install(['https://github.com/deployd/deployd/tarball/master'], finished);
+  if (program.master) {
+    echo("Installing Deployd from github...");  
+    npm.commands.install(['https://github.com/deployd/deployd/tarball/master'], finished);
+  } else {
+    echo("Installing Deployd...");  
+    npm.commands.install(['deployd'], finished);
+  }  
 }
 
 function checkLatestVersion(err, data) {
@@ -78,7 +89,7 @@ function abortIf(err) {
 }
 
 function end(code) {
-  if (~process.argv.indexOf('-w') || ~process.argv.indexOf('--wait')) {
+  if (program.wait) {
     echo("");
     process.stdout.write("Press any key to continue...");
     process.stdin.resume();
@@ -97,6 +108,4 @@ process.on('uncaughtException', function (err) {
   end(1);
 });
 
-//TODO: Don't force!
-process.argv.push('-f');
 npm.load({production: true}, loadInfo);
