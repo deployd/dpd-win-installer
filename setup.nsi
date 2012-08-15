@@ -7,7 +7,7 @@ RequestExecutionLevel admin
 
 # General Symbol Definitions
 !define REGKEY "SOFTWARE\$(^Name)"
-!define VERSION 0.5.1
+!define VERSION 0.6.0
 !define COMPANY "Deployd, LLC"
 !define URL http://www.deployd.com
 
@@ -62,7 +62,7 @@ InstallDir $PROGRAMFILES\Deployd
 CRCCheck on
 XPStyle on
 ShowInstDetails show
-VIProductVersion 0.5.1.0
+VIProductVersion 0.6.0.0
 VIAddVersionKey ProductName Deployd
 VIAddVersionKey ProductVersion "${VERSION}"
 VIAddVersionKey CompanyName "${COMPANY}"
