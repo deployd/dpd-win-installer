@@ -7,7 +7,7 @@ RequestExecutionLevel admin
 
 # General Symbol Definitions
 !define REGKEY "SOFTWARE\$(^Name)"
-!define VERSION 0.6.0
+!define VERSION 0.6.1
 !define COMPANY "Deployd, LLC"
 !define URL http://www.deployd.com
 
@@ -98,7 +98,7 @@ Section -post SEC0001
     !insertmacro MUI_STARTMENU_WRITE_BEGIN Application
     SetOutPath $SMPROGRAMS\$StartMenuGroup
     CreateShortcut "$SMPROGRAMS\$StartMenuGroup\Uninstall $(^Name).lnk" $INSTDIR\uninstall.exe
-    CreateShortcut "$SMPROGRAMS\$StartMenuGroup\Check for Updates.lnk" "$INSTDIR\bin\dpd-update.exe" "--wait --master" "$INSTDIR\resources\logo-circle.ico" ""
+    CreateShortcut "$SMPROGRAMS\$StartMenuGroup\Check for Updates.lnk" "$INSTDIR\bin\dpd-update.exe" "--wait" "$INSTDIR\resources\logo-circle.ico" ""
     !insertmacro CreateInternetShortcut "$SMPROGRAMS\$StartMenuGroup\Getting Started" ${GUIDE_URL} "$INSTDIR\resources\logo-circle.ico" "0"
     !insertmacro MUI_STARTMENU_WRITE_END
     WriteRegStr HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" DisplayName "$(^Name)"

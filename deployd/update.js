@@ -16,7 +16,7 @@ program
 
 process.chdir(__dirname);
 
-process.stdin.setRawMode(true);    
+if (process.stdin.setRawMode) process.stdin.setRawMode(true);    
 
 function loadInfo(err) {
   abortIf(err);
