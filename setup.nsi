@@ -7,7 +7,7 @@ RequestExecutionLevel admin
 
 # General Symbol Definitions
 !define REGKEY "SOFTWARE\$(^Name)"
-!define VERSION 0.6.2
+!define VERSION 0.6.5
 !define COMPANY "Deployd, LLC"
 !define URL http://www.deployd.com
 
