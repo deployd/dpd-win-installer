@@ -1,0 +1,15 @@
+Important:
+--You must use the special large-string build of NSIS to avoid wiping out users' path, see http://nsis.sourceforge.net/Environmental_Variables:_append,_prepend,_and_remove_entries
+
+Pre-build:
+* Add tested 32-bit versions of node.exe and mongod.exe to `deployd\tools`
+* Add tested version of npm, shelljs, and commander to `deployd\node_modules`
+* Delete `deployd\node_modules\deployd`
+* `cd` into `dpd-win-installer\deployd\`
+* Run `tools\node.exe node_modules\npm\cli.js install deployd`
+
+Build installer:
+* `cd` into `dpd-win-installer\`
+* Update this line in `setup.nsi` to match the current version of Deployd:  `!define VERSION x.x.x`
+* Run `makensis setup.nsi`
+* Your new installer will be at `dpd-win-installer\build

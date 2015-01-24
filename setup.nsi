@@ -7,11 +7,11 @@ RequestExecutionLevel admin
 
 # General Symbol Definitions
 !define REGKEY "SOFTWARE\$(^Name)"
-!define VERSION 0.6.5
+!define VERSION 0.7.0
 !define COMPANY "Deployd, LLC"
 !define URL http://www.deployd.com
 
-!define GUIDE_URL http://www.deployd.com/docs
+!define GUIDE_URL http://docs.deployd.com/docs
 
 # MUI Symbol Definitions
 !define MUI_ICON "${NSISDIR}\Contrib\Graphics\Icons\orange-install.ico"
@@ -24,9 +24,9 @@ RequestExecutionLevel admin
 !define MUI_UNFINISHPAGE_NOAUTOCLOSE
 
 !define MUI_HEADERIMAGE
-!define MUI_HEADERIMAGE_BITMAP "docs\header.bmp" 
+!define MUI_HEADERIMAGE_BITMAP "docs\header.bmp"
 !define MUI_WELCOMEFINISHPAGE_BITMAP "docs\splash.bmp"
-!define MUI_UNWELCOMEFINISHPAGE_BITMAP "docs\splash.bmp"  
+!define MUI_UNWELCOMEFINISHPAGE_BITMAP "docs\splash.bmp"
 
 # Included files
 !include Sections.nsh
@@ -42,8 +42,8 @@ Var StartMenuGroup
 !define MUI_FINISHPAGE_RUN "explorer.exe"
 !define MUI_FINISHPAGE_RUN_PARAMETERS "${GUIDE_URL}"
 !define MUI_FINISHPAGE_RUN_TEXT "Open the Getting Started guide"
- 
-!insertmacro MUI_PAGE_WELCOME 
+
+!insertmacro MUI_PAGE_WELCOME
 !insertmacro MUI_PAGE_LICENSE docs\license.rtf
 !insertmacro MUI_PAGE_DIRECTORY
 !insertmacro MUI_PAGE_STARTMENU Application $StartMenuGroup
@@ -109,7 +109,7 @@ Section -post SEC0001
     WriteRegStr HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" UninstallString $INSTDIR\uninstall.exe
     WriteRegDWORD HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" NoModify 1
     WriteRegDWORD HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" NoRepair 1
-    
+
     ${EnvVarUpdate} $0 "PATH" "A" "HKLM" "$INSTDIR\bin" # TODO: Make this optional
     !insertmacro APP_ASSOCIATE "dpd" "dpd.app" "Deployd App" "$INSTDIR\resources\logo-circle.ico" \
         "Start Deployd app" "$INSTDIR\bin\dpd.cmd $\"%1$\" --dashboard --wait"
@@ -140,7 +140,7 @@ Section -un.post UNSEC0001
     ${un.EnvVarUpdate} $0 "PATH" "R" "HKLM" "$INSTDIR\bin"
     !insertmacro APP_UNASSOCIATE "dpd" "dpd.app"
     !insertmacro UPDATEFILEASSOC
-    
+
     DeleteRegKey HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)"
     Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\Uninstall $(^Name).lnk"
     Delete /REBOOTOK $INSTDIR\uninstall.exe
