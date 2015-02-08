@@ -1,4 +1,3 @@
 TODO:
 [-] Create shelljs script to automate the prebuild process
-[X] Somehow source control the installer script
 [-] Create better experience: skip advanced options by default, ask to modify PATH
